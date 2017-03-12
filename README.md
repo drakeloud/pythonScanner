@@ -9,7 +9,7 @@ Installation:
 
 Usage:
 The script takes arguments in this fashion:
-./pythonScanner <ipaddress> <ports> flags
+./pythonScanner ipaddress ports optionalFlags
 
 If you want to run several ip addresses, then use CIDR notation. E.g.
 ./pythonScanner 192.168.1.1/28 80
