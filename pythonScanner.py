@@ -21,7 +21,6 @@ subprocess.call('clear', shell=True)
 #Start timer! woo hoo!
 timeOne = datetime.now()
 
-
 #Clean the ports that you received
 portsUgly = args['ports']
 ports = portsUgly.split(",")
@@ -29,6 +28,7 @@ UDP = args['UDP']
 hostValue = args['hosts']
 hosts = []
 
+system('clear')
 print "*************************************************************************"
 print "                    Scanning hosts, please wait..."
 print "*************************************************************************"
@@ -43,8 +43,6 @@ else:
     print "Currently Scanning TCP ports..."
 print ""
 
-
-
 #Get Hosts Values
 if "/" in hostValue:
     ip = IPNetwork(hostValue)
@@ -55,7 +53,6 @@ if "/" in hostValue:
 
 else:
     hosts.append(hostValue)
-
 
 #Function to get the ports for every host
 def scanPorts(host):
@@ -81,16 +78,13 @@ def scanPorts(host):
 
     # Error handling if something goes bad
     except socket.gaierror:
-        print('Couldnt find hostname. The hostname may be invalid')
+        print('Couldnt find hostname. The hostname may be invalid or incorrect.')
         sys.exit()
 
 
     except socket.error:
         print('Bad connection to server. Try again later.')
         sys.exit()
-
-
-
 
 
 print "----------------RESULTS----------------"
