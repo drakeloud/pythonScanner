@@ -1,5 +1,5 @@
 # pythonScanner
-Python Scanner for running TCP or UDP scans
+Python Scanner for running TCP or UDP scans on python 2.7
 
 Installation:
 
