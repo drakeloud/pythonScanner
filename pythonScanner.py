@@ -1,13 +1,15 @@
 #!/usr/bin/python
+from __future__ import print_function
 
-import sys
 import argparse
-import subprocess
+import os
 import socket
+import sys
 from datetime import datetime
+
 from netaddr import IPNetwork
 
-#Set up argparse
+# Set up argparse
 parser = argparse.ArgumentParser()
 parser.add_argument("hosts")
 parser.add_argument("ports")
@@ -15,47 +17,31 @@ parser.add_argument("-u", "--UDP", help="Perform a UDP scan on the ports specifi
 parser.add_argument("-t", "--traceroute", help="Use traceroute with the scan", action="store_true")
 args = vars(parser.parse_args())
 
-#Clean the shell window for better UI
-subprocess.call('clear', shell=True)
-
-#Start timer! woo hoo!
+# Start timer! woo hoo!
 timeOne = datetime.now()
 
-#Clean the ports that you received
+# Clean the ports that you received
 portsUgly = args['ports']
 ports = portsUgly.split(",")
 UDP = args['UDP']
 hostValue = args['hosts']
 hosts = []
 
-system('clear')
-print "*************************************************************************"
-print "                    Scanning hosts, please wait..."
-print "*************************************************************************"
-print ""
-print "User entered ports: ", portsUgly
-print ""
-print "User entered hosts: ", hostValue
-print ""
-if UDP:
-    print "Currently Scanning UDP ports..."
-else:
-    print "Currently Scanning TCP ports..."
-print ""
 
-#Get Hosts Values
-if "/" in hostValue:
-    ip = IPNetwork(hostValue)
-    ip_list = list(ip)
+def clear_screen():
+    """
+    Clear screen that handle multiple OS.
+    """
+    if os.name == 'nt':
+        os.system('cls')
+    else:
+        os.system('clear')
 
-    for ip in IPNetwork(hostValue).iter_hosts():
-        hosts.append('%s' % ip)
 
-else:
-    hosts.append(hostValue)
-
-#Function to get the ports for every host
-def scanPorts(host):
+def scan_ports(host):
+    """
+    Function to get the ports for every host
+    """
     try:
         for port in ports:
             # Goes through each port in range
@@ -80,25 +66,51 @@ def scanPorts(host):
     except socket.gaierror:
         print('Couldnt find hostname. The hostname may be invalid or incorrect.')
         sys.exit()
-
-
     except socket.error:
         print('Bad connection to server. Try again later.')
         sys.exit()
+    except KeyboardInterrupt:
+        print('Bye..')
+        sys.exit()
 
 
-print "----------------RESULTS----------------"
-for host in hosts:
+if __name__ == '__main__':
+    clear_screen()
+    print("*************************************************************************")
+    print("                    Scanning hosts, please wait...")
+    print("*************************************************************************")
+    print("")
+    print("User entered ports: ", portsUgly)
+    print("")
+    print("User entered hosts: ", hostValue)
+    print("")
+    if UDP:
+        print("Currently Scanning UDP ports...")
+    else:
+        print("Currently Scanning TCP ports...")
+    print("")
 
-    print "Scanning host: ",host
+    # Get Hosts Values
+    if "/" in hostValue:
+        ip = IPNetwork(hostValue)
+        ip_list = list(ip)
 
-    scanPorts(host)
-    print ""
+        for ip in IPNetwork(hostValue).iter_hosts():
+            hosts.append('%s' % ip)
 
-timeTwo = datetime.now()
+    else:
+        hosts.append(hostValue)
 
-finalTime = timeTwo - timeOne
-print "Scan finished in the following time: ", finalTime
-print "*************************************************************************"
-print "                Hosts Scanned. Finishing up... (-.-)Zzz..."
-print "*************************************************************************"
+    print("----------------RESULTS----------------")
+    for host in hosts:
+        print("Scanning host: ", host)
+        scan_ports(host)
+        print("")
+
+    timeTwo = datetime.now()
+
+    finalTime = timeTwo - timeOne
+    print("Scan finished in the following time: ", finalTime)
+    print("*************************************************************************")
+    print("                Hosts Scanned. Finishing up... (-.-)Zzz...")
+    print("*************************************************************************")
