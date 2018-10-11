@@ -1,13 +1,13 @@
 # pythonScanner
 Python Scanner for running TCP or UDP scans on python 2.7
 
-Installation:
+## Installation:
 
-1. pip install netaddr
-2. Make the python script an executable
-3. Scan!
+1.    pip install netaddr
+1.    Make the python script an executable
+1.    Scan!
 
-Usage:
+## Usage:
 The script takes arguments in this fashion:
 ./pythonScanner ipaddress ports optionalFlags
 
